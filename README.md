@@ -39,13 +39,13 @@ watch packets for fun, and make small boards do things they shouldn't.
 
 `edge` ![Raspberry Pi](https://img.shields.io/badge/Raspberry_Pi_5-a2281c?style=flat-square&logo=raspberrypi&logoColor=white) ![UART/I2C/SPI](https://img.shields.io/badge/UART%2FI2C%2FSPI-22d3ee?style=flat-square)
 
-### ⚡ the console above
+### ⚡ the card above
 
-The dashboard at the top isn't a static image — it's a **self-updating animated SVG**:
+The dashboard isn't a static image — it's a **self-updating SVG that mimics this page**:
 
-- a 3D isometric contribution calendar in GitHub greens — blocks rise with daily push signal
-- a minimal neural net accent with activations pulsing through
-- language mix + edge fleet line (Pi 5 · dev boards · WiFi autologin)
+- your real avatar, auto-embedded and refreshed
+- quiet stats only — contributions, active days, public repos (no follower/star counts)
+- a 14-day activity sparkline and tech tiles
 - **regenerates itself daily** via [GitHub Actions](.github/workflows/metrics.yml) — `03:37 UTC`
 - adapts to dark / light mode automatically
 

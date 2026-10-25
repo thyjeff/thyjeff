@@ -1,10 +1,3 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: light)" srcset="assets/dashboard-light.svg">
-    <img src="assets/dashboard.svg" width="100%" alt="thyjeff // embodied-ai console — a live, self-updating animated metrics dashboard">
-  </picture>
-</p>
-
 ```python
 >>> whoami()
 'Jefflin Immanuel · @thyjeff'
@@ -15,19 +8,16 @@
 ['raspberry pi 5', 'assorted dev boards']
 ```
 
-Deep learning × robotics — building vision-language-action systems and getting
-them to run on real hardware. I train in simulation (Isaac Sim / Isaac Lab),
-watch packets for fun, and make small boards do things they shouldn't.
+deep learning × robotics — getting vision models to run on real hardware.
+training in simulation (Isaac Sim / Isaac Lab), watching packets, flashing boards.
 
----
+### 🧠 focus
 
-### 🧠 currently training on
-
-- **VLAs & foundation models for robots** — GR00T-style policies, VLM reasoning → motor actions
-- **Sim2real** — Isaac Sim / Isaac Lab pipelines → exported policies on edge hardware
-- **Computer vision** — detection, tracking, anything with a camera in the loop
-- **Networking** — WiFi automation, captive-portal tooling, protocol tinkering
-- **Embedded / edge AI** — Raspberry Pi 5 + dev boards as inference nodes
+- deep learning for robotics — GR00T-style foundation models
+- computer vision — detection, tracking, cameras in the loop
+- sim2real with Isaac Sim / Isaac Lab
+- networking — WiFi automation, protocol tinkering
+- embedded — Raspberry Pi 5 + dev boards as inference nodes
 
 ### 🦾 stack
 
@@ -38,16 +28,6 @@ watch packets for fun, and make small boards do things they shouldn't.
 `systems` ![Linux](https://img.shields.io/badge/Linux-fcc624?style=flat-square&logo=linux&logoColor=black) ![Python](https://img.shields.io/badge/Python-3776ab?style=flat-square&logo=python&logoColor=white) ![Kotlin](https://img.shields.io/badge/Kotlin-7f52ff?style=flat-square&logo=kotlin&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-f7df1e?style=flat-square&logo=javascript&logoColor=black) ![PowerShell](https://img.shields.io/badge/PowerShell-5391fe?style=flat-square&logo=powershell&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ed?style=flat-square&logo=docker&logoColor=white)
 
 `edge` ![Raspberry Pi](https://img.shields.io/badge/Raspberry_Pi_5-a2281c?style=flat-square&logo=raspberrypi&logoColor=white) ![UART/I2C/SPI](https://img.shields.io/badge/UART%2FI2C%2FSPI-22d3ee?style=flat-square)
-
-### ⚡ the card above
-
-The dashboard isn't a static image — it's a **self-updating SVG that mimics this page**:
-
-- your real avatar, auto-embedded and refreshed
-- quiet stats only — contributions, active days, public repos (no follower/star counts)
-- a 14-day activity sparkline and tech tiles
-- **regenerates itself daily** via [GitHub Actions](.github/workflows/metrics.yml) — `03:37 UTC`
-- adapts to dark / light mode automatically
 
 ### 🔗 signal
 

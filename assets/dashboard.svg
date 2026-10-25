@@ -12,7 +12,7 @@ text { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation
 <text x="28" y="40" font-size="19" font-weight="700" fill="#3fb950">&#9648; thyjeff <tspan fill="#8b949e" font-weight="400">// console</tspan></text>
 <circle cx="1080" cy="35" r="4" fill="#3fb950" class="led"/>
 <text x="1092" y="39" font-size="10" class="dim">live</text>
-<text x="1172" y="39" font-size="9" text-anchor="end" class="faint">ckpt 20261025.1659Z</text>
+<text x="1172" y="39" font-size="9" text-anchor="end" class="faint">ckpt 20261025.1132Z</text>
 <line x1="24" y1="58" x2="1176" y2="58" stroke="#30363d"/>
 <rect x="24" y="74" width="1152" height="360" rx="10" fill="#161b22" stroke="#30363d"/>
 <text x="190" y="108" font-size="9" text-anchor="middle" class="faint">MAY</text>
@@ -202,17 +202,19 @@ text { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation
 <polygon points="627,381.0 650,390.5 627,400.0 604,390.5" fill="#e6edf3" stroke="#afb8c1" stroke-width="0.6"/>
 <polygon points="558,390.5 581,400.0 558,409.5 535,400.0" fill="#e6edf3" stroke="#afb8c1" stroke-width="0.6"/>
 <polygon points="604,390.5 627,400.0 604,409.5 581,400.0" fill="#e6edf3" stroke="#afb8c1" stroke-width="0.6"/>
-<polygon points="581,400.0 604,409.5 581,419.0 558,409.5" fill="#e6edf3" stroke="#afb8c1" stroke-width="0.6"/>
-<polygon points="581,400.0 604,409.5 581,419.0 558,409.5" fill="none" stroke="#3fb950" stroke-width="1.6"><animate attributeName="opacity" values="1;0.15;1" dur="1.8s" repeatCount="indefinite"/></polygon>
+<polygon points="558,394.5 581,404.0 581,419.0 558,409.5" fill="#257139"/>
+<polygon points="604,394.5 581,404.0 581,419.0 604,409.5" fill="#339c4f"/>
+<polygon points="581,385.0 604,394.5 581,404.0 558,394.5" fill="#40c463"/>
+<polygon points="581,385.0 604,394.5 581,404.0 558,394.5" fill="none" stroke="#3fb950" stroke-width="1.6"><animate attributeName="opacity" values="1;0.15;1" dur="1.8s" repeatCount="indefinite"/></polygon>
 <text x="800" y="120" font-size="10" letter-spacing="2" class="dim" font-weight="600">CONTRIBUTIONS <tspan fill="#3fb950">// 24 WKS</tspan></text>
-<text x="800" y="170" font-size="42" font-weight="700" fill="#3fb950">7</text>
+<text x="800" y="170" font-size="42" font-weight="700" fill="#3fb950">9</text>
 <text x="800" y="192" font-size="9" class="faint">push events · public signal</text>
 <text x="800" y="232" font-size="10" class="dim">best streak</text>
 <text x="1160" y="232" font-size="10" text-anchor="end" fill="#e6edf3">1d</text>
 <text x="800" y="256" font-size="10" class="dim">highest / day</text>
-<text x="1160" y="256" font-size="10" text-anchor="end" fill="#e6edf3">1</text>
+<text x="1160" y="256" font-size="10" text-anchor="end" fill="#e6edf3">2</text>
 <text x="800" y="280" font-size="10" class="dim">average / day</text>
-<text x="1160" y="280" font-size="10" text-anchor="end" fill="#e6edf3">0.0</text>
+<text x="1160" y="280" font-size="10" text-anchor="end" fill="#e6edf3">0.1</text>
 <text x="800" y="304" font-size="10" class="dim">public repos</text>
 <text x="1160" y="304" font-size="10" text-anchor="end" fill="#e6edf3">13</text>
 <text x="800" y="400" font-size="8" class="faint">less</text>
@@ -225,11 +227,11 @@ text { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation
 <rect x="24" y="450" width="640" height="136" rx="10" fill="#161b22" stroke="#30363d"/>
 <text x="40" y="476" font-size="10" letter-spacing="2" class="dim" font-weight="600">LANGUAGES</text>
 <rect x="40" y="492" width="608" height="16" rx="8" fill="#14181f" stroke="#30363d" stroke-width="0.6"/>
-<rect x="40.0" y="493.5" width="316.7" height="13" fill="#9be9a8" opacity="0.95"/>
-<rect x="356.7" y="493.5" width="126.4" height="13" fill="#40c463" opacity="0.95"/>
-<rect x="483.1" y="493.5" width="92.7" height="13" fill="#30a14e" opacity="0.95"/>
-<rect x="575.7" y="493.5" width="54.9" height="13" fill="#216e39" opacity="0.95"/>
-<rect x="630.6" y="493.5" width="13.5" height="13" fill="#39d353" opacity="0.95"/>
+<rect x="40.0" y="493.5" width="314.9" height="13" fill="#9be9a8" opacity="0.95"/>
+<rect x="354.9" y="493.5" width="125.7" height="13" fill="#40c463" opacity="0.95"/>
+<rect x="480.6" y="493.5" width="92.2" height="13" fill="#30a14e" opacity="0.95"/>
+<rect x="572.7" y="493.5" width="58.0" height="13" fill="#216e39" opacity="0.95"/>
+<rect x="630.7" y="493.5" width="13.4" height="13" fill="#39d353" opacity="0.95"/>
 <circle cx="43.0" cy="534" r="3" fill="#9be9a8"/>
 <text x="50.0" y="537" font-size="9" class="dim">JavaScript 52%</text>
 <circle cx="144.6" cy="534" r="3" fill="#40c463"/>
@@ -237,9 +239,9 @@ text { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation
 <circle cx="224.6" cy="534" r="3" fill="#30a14e"/>
 <text x="231.6" y="537" font-size="9" class="dim">HTML 15%</text>
 <circle cx="293.8" cy="534" r="3" fill="#216e39"/>
-<text x="300.8" y="537" font-size="9" class="dim">Python 9%</text>
-<circle cx="368.4" cy="534" r="3" fill="#39d353"/>
-<text x="375.4" y="537" font-size="9" class="dim">PowerShell 2%</text>
+<text x="300.8" y="537" font-size="9" class="dim">Python 10%</text>
+<circle cx="373.8" cy="534" r="3" fill="#39d353"/>
+<text x="380.8" y="537" font-size="9" class="dim">PowerShell 2%</text>
 <rect x="684" y="450" width="492" height="136" rx="10" fill="#161b22" stroke="#30363d"/>
 <line x1="731" y1="486" x2="924" y2="470" stroke="#30363d" stroke-width="0.8"/>
 <line x1="731" y1="486" x2="924" y2="502" stroke="#30363d" stroke-width="0.8"/>

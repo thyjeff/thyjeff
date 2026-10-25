@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-thyjeff // embodied-ai console
-Generates a self-animating SVG dashboard (dark + light) from live GitHub data.
-Runs locally and inside .github/workflows/metrics.yml — stdlib only, no deps.
+thyjeff // console
+Generates a minimal animated SVG dashboard (dark + light) from live GitHub data.
+Hero: 3D isometric contribution calendar (GitHub-green). Accent: tiny neural net.
+Runs locally and inside .github/workflows/metrics.yml — stdlib only.
 
 Outputs:
   assets/dashboard.svg        (dark)
@@ -22,7 +23,7 @@ API = "https://api.github.com"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ASSETS = os.path.join(ROOT, "assets")
 
-WEEKS = 12
+WEEKS = 24
 DAYS = WEEKS * 7
 
 
@@ -49,16 +50,15 @@ def collect():
     data = {"generated": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%MZ")}
     try:
         u = api(f"/users/{USER}")
-        repos = [r for r in api(f"/users/{USER}/repos?per_page=100") if not r["fork"]]
+        repos = api(f"/users/{USER}/repos?per_page=100")
+        own = [r for r in repos if not r["fork"]]
         data.update(
             repos_public=u["public_repos"],
-            followers=u["followers"],
-            stars=sum(r["stargazers_count"] for r in repos),
             since=u["created_at"][:10],
         )
     except Exception as e:
         print("user/repos fetch failed:", e)
-        data.update({k: cache.get(k, 0) for k in ("repos_public", "followers", "stars")})
+        data["repos_public"] = cache.get("repos_public", 0)
         data["since"] = cache.get("since", "2024-09-26")
 
     # languages (best effort, per repo)
@@ -78,14 +78,14 @@ def collect():
 
     # daily activity score over the trailing window
     days = {}
-    today = dt.date.today()
     try:
         for page in (1, 2, 3):
             for e in api(f"/users/{USER}/events/public?per_page=100&page={page}"):
                 d = e["created_at"][:10]
                 if e["type"] == "PushEvent":
                     days[d] = days.get(d, 0) + max(1, e.get("payload", {}).get("size", 1))
-                elif e["type"] in ("CreateEvent", "PublicEvent", "PullRequestEvent", "IssuesEvent", "ReleaseEvent"):
+                elif e["type"] in ("CreateEvent", "PublicEvent", "PullRequestEvent",
+                                   "IssuesEvent", "ReleaseEvent", "ForkEvent"):
                     days[d] = days.get(d, 0) + 1
     except Exception as e:
         print("events fetch failed:", e)
@@ -98,36 +98,32 @@ def collect():
     if not days:
         days = cache.get("days", {})
     data["days"] = days
-    data["active_days"] = len([d for d in days if (today - dt.date.fromisoformat(d)).days < DAYS])
     return data
 
 
 # ---------------------------------------------------------------- svg render
 
 DARK = dict(
-    bg="#0b0f14", panel="#10161d", stroke="#1e2a36", grid="#16202a",
-    text="#e6edf3", dim="#8b99a6", faint="#54626f",
-    accent="#22d3ee", accent2="#a78bfa", accent3="#fbbf24", good="#34d399",
-    empty="#1a2530",
+    bg="#0d1117", panel="#161b22", stroke="#30363d",
+    text="#e6edf3", dim="#8b949e", faint="#6e7681",
+    green="#3fb950", good="#3fb950",
+    tile="#e6edf3", tile_stroke="#afb8c1",
 )
 LIGHT = dict(
-    bg="#eef2f6", panel="#ffffff", stroke="#d5dde5", grid="#e2e8ee",
-    text="#0f172a", dim="#5b6b7a", faint="#94a3b1",
-    accent="#0891b2", accent2="#7c3aed", accent3="#b45309", good="#059669",
-    empty="#dbe3ea",
+    bg="#f6f8fa", panel="#ffffff", stroke="#d0d7de",
+    text="#1f2328", dim="#656d76", faint="#8c959f",
+    green="#1a7f37", good="#1a7f37",
+    tile="#ffffff", tile_stroke="#d0d7de",
 )
-LANG_COLORS = ["#22d3ee", "#a78bfa", "#fbbf24", "#34d399", "#f472b6", "#64748b"]
-LANG_COLORS_L = ["#0891b2", "#7c3aed", "#b45309", "#059669", "#db2777", "#64748b"]
+# GitHub contribution greens, level 1..4 (top face); side faces get shaded.
+LEVELS = ["#9be9a8", "#40c463", "#30a14e", "#216e39"]
+LANG_COLORS = ["#9be9a8", "#40c463", "#30a14e", "#216e39", "#39d353", "#6e7681"]
 
 CSS = """
 text { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace; }
-.t   { fill: %text%; }
-.dim { fill: %dim%; }
-.faint{ fill: %faint%; }
-.acc { fill: %accent%; }
-.h   { font-size: 11px; letter-spacing: 2px; font-weight: 600; }
+.dim { fill: %dim%; } .faint { fill: %faint%; } .t { fill: %text%; }
 @keyframes led { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
-.led { animation: led 2.2s infinite; }
+.led  { animation: led 2.2s infinite; }
 .led2 { animation: led 2.2s .7s infinite; }
 .led3 { animation: led 2.2s 1.4s infinite; }
 """
@@ -135,6 +131,14 @@ text { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation
 
 def esc(s):
     return html.escape(str(s), quote=True)
+
+
+def shade(hexcolor, f):
+    """Multiply a #rrggbb color by factor f."""
+    h = hexcolor.lstrip("#")
+    r, g, b = (int(h[i:i + 2], 16) for i in (0, 2, 4))
+    return "#{:02x}{:02x}{:02x}".format(
+        min(255, int(r * f)), min(255, int(g * f)), min(255, int(b * f)))
 
 
 def level(score):
@@ -150,221 +154,200 @@ def level(score):
 
 
 def render(d, p, light=False):
-    """p = palette dict. Returns full SVG string."""
-    lang_colors = LANG_COLORS_L if light else LANG_COLORS
     now = dt.datetime.now(dt.timezone.utc)
     today = dt.date.today()
     s = []
 
-    # ---------- language mix
     langs = sorted(d["langs"].items(), key=lambda x: -x[1])
-    total = sum(n for _, n in langs) or 1
-    top, other = langs[:5], sum(n for _, n in langs[5:])
+    ltotal = sum(n for _, n in langs) or 1
+    top = langs[:5]
 
-    # ---------- network geometry (panel 1)
-    inp = [(88, 170, "V", "VISION"), (88, 268, "L", "LANGUAGE"), (88, 366, "S", "STATE")]
-    h1 = [(225, y) for y in (130, 218, 306, 394)]
-    h2 = [(330, y) for y in (130, 218, 306, 394)]
-    out = [(425, 170, "\u0394x"), (425, 268, "\u0394\u03b8"), (425, 366, "grip")]
+    # ---------- calendar data (WEEKS columns, 7 weekday rows, Mon-start)
+    first_day = today - dt.timedelta(days=DAYS - 1)
+    first_monday = first_day - dt.timedelta(days=first_day.weekday())
+    cols = []
+    for c in range(WEEKS):
+        week = []
+        for r in range(7):
+            day = first_monday + dt.timedelta(days=c * 7 + r)
+            week.append((day, d["days"].get(day.isoformat(), 0)))
+        cols.append(week)
 
-    edges = []
-    eid = 0
-    edge_ids = []
-    for (x1, y1, *_) in inp:
-        for (x2, y2) in h1:
-            eid += 1
-            edges.append((f"e{eid}", x1 + 14, y1, x2 - 12, y2))
-            edge_ids.append(f"e{eid}")
-    for (x1, y1) in h1:
-        for (x2, y2) in h2:
-            eid += 1
-            edges.append((f"e{eid}", x1 + 12, y1, x2 - 12, y2))
-            edge_ids.append(f"e{eid}")
-    for (x1, y1) in h2:
-        for (x2, y2, *_) in out:
-            eid += 1
-            edges.append((f"e{eid}", x1 + 12, y1, x2 - 13, y2))
-            edge_ids.append(f"e{eid}")
-    # pulses: a spread of travelling activations across the graph
-    pulse_edges = ["e1", "e9", "e13", "e18", "e22", "e28", "e31", "e35", "e40", "e44",
-                   "e46", "e49", "e52", "e55", "e58"]
-    pulse_colors = [p["accent"], p["accent2"], p["accent3"]]
-
-    # ---------- reward grid geometry (panel 3)
-    gx, gy = 540, 264
-    cw, ch = 7.35, 13.2
-    grid = []
-    for col in range(DAYS):
-        day = today - dt.timedelta(days=DAYS - 1 - col)
-        score = d["days"].get(day.isoformat(), 0)
-        grid.append((day, score, gx + col * cw, gy + (day.weekday()) * ch))
-
-    last_active = max(
-        (g for g in grid if g[1] > 0), key=lambda g: g[0], default=None
-    )
-
-    # ---------- stat chips (panel 2)
-    years = (dt.date.fromisoformat(d.get("since", "2024-09-26")) and
-             (today - dt.date.fromisoformat(d.get("since", "2024-09-26"))).days / 365.25)
-    chips = [
-        ("PUBLIC REPOS", d.get("repos_public", 0), "code under version control"),
-        ("STARS EARNED", d.get("stars", 0), "across all repos"),
-        ("FOLLOWERS", d.get("followers", 0), "signal listeners"),
-        ("ONLINE FOR", f"{years:.1f}y".replace(".0y", "y"), f"since {d.get('since','?')[:7]}"),
-    ]
-    chip_xs = [540, 699, 858, 1017]
+    scores = [score for week in cols for (_, score) in week if score > 0]
+    total = sum(scores)
+    highest = max(scores) if scores else 0
+    streak = best = 0
+    for week in cols:
+        for (_, score) in week:
+            streak = streak + 1 if score > 0 else 0
+            best = max(best, streak)
+    avg = total / DAYS
 
     # ---------- svg head
     css = CSS
     for k, v in p.items():
         css = css.replace(f"%{k}%", v)
-
-    s.append(f'<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" '
-             f'viewBox="0 0 1200 640" role="img" aria-label="thyjeff embodied-AI console — live GitHub metrics">')
-    s.append(f"<title>thyjeff // embodied-ai console</title>")
+    s.append('<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" '
+             'viewBox="0 0 1200 680" role="img" aria-label="thyjeff console — isometric '
+             'contribution calendar and live GitHub metrics">')
+    s.append("<title>thyjeff // console</title>")
     s.append(f"<style>{css}</style>")
-    s.append(f'<defs>'
-             f'<pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">'
-             f'<circle cx="1" cy="1" r="1" fill="{p["grid"]}"/></pattern>'
-             f'<linearGradient id="scan" x1="0" y1="0" x2="0" y2="1">'
-             f'<stop offset="0" stop-color="{p["accent"]}" stop-opacity="0"/>'
-             f'<stop offset=".5" stop-color="{p["accent"]}" stop-opacity=".06"/>'
-             f'<stop offset="1" stop-color="{p["accent"]}" stop-opacity="0"/></linearGradient>'
-             f'<linearGradient id="titlegrad" x1="0" y1="0" x2="1" y2="0">'
-             f'<stop offset="0" stop-color="{p["accent"]}"/>'
-             f'<stop offset="1" stop-color="{p["accent2"]}"/></linearGradient>'
-             f'</defs>')
-
-    s.append(f'<rect width="1200" height="640" rx="14" fill="{p["bg"]}"/>')
-    s.append(f'<rect width="1200" height="640" rx="14" fill="url(#dots)"/>')
-
-    # scanline sweep
-    s.append(f'<rect width="1200" height="140" fill="url(#scan)">'
-             f'<animateTransform attributeName="transform" type="translate" '
-             f'from="0 -140" to="0 640" dur="9s" repeatCount="indefinite"/></rect>')
+    s.append(f'<rect width="1200" height="680" fill="{p["bg"]}"/>')
 
     # ---------- header
-    s.append(f'<text x="28" y="42" font-size="19" font-weight="700" fill="url(#titlegrad)">'
-             f'&#9648; thyjeff <tspan fill="{p["dim"]}" font-weight="400">// embodied-ai console</tspan></text>')
-    s.append(f'<circle cx="938" cy="37" r="4" fill="{p["good"]}" class="led"/>')
-    s.append(f'<text x="950" y="41" font-size="10" class="dim">sys:nominal</text>')
-    s.append(f'<text x="1172" y="41" font-size="9" text-anchor="end" class="faint">'
+    s.append(f'<text x="28" y="40" font-size="19" font-weight="700" fill="{p["green"]}">'
+             f'&#9648; thyjeff <tspan fill="{p["dim"]}" font-weight="400">// console</tspan></text>')
+    s.append(f'<circle cx="1080" cy="35" r="4" fill="{p["good"]}" class="led"/>')
+    s.append(f'<text x="1092" y="39" font-size="10" class="dim">live</text>')
+    s.append(f'<text x="1172" y="39" font-size="9" text-anchor="end" class="faint">'
              f'ckpt {esc(now.strftime("%Y%m%d.%H%M"))}Z</text>')
-    s.append(f'<line x1="24" y1="62" x2="1176" y2="62" stroke="{p["stroke"]}"/>')
+    s.append(f'<line x1="24" y1="58" x2="1176" y2="58" stroke="{p["stroke"]}"/>')
 
-    # ---------- panel 1 : VLA policy network
-    s.append(f'<rect x="24" y="88" width="476" height="384" rx="10" fill="{p["panel"]}" stroke="{p["stroke"]}"/>')
-    s.append(f'<text x="40" y="112" class="h dim">VLA POLICY <tspan class="acc">// live inference</tspan></text>')
+    # ---------- hero: isometric calendar
+    s.append(f'<rect x="24" y="74" width="1152" height="360" rx="10" fill="{p["panel"]}" '
+             f'stroke="{p["stroke"]}"/>')
 
-    for i, (ex, x1, y1, x2, y2) in enumerate(edges):
-        s.append(f'<path id="{ex}" d="M{x1} {y1} L{x2} {y2}" stroke="{p["stroke"]}" '
-                 f'stroke-width="1" fill="none"/>')
-    for i, pe in enumerate(x for x in pulse_edges if x in edge_ids):
-        ex, x1, y1, x2, y2 = next(e for e in edges if e[0] == pe)
-        c = pulse_colors[i % 3]
-        s.append(f'<circle r="2.6" fill="{c}">'
-                 f'<animateMotion dur="{1.9 + (i % 4) * 0.45:.2f}s" begin="{(i * 0.37) % 2.4:.2f}s" '
-                 f'repeatCount="indefinite"><mpath href="#{ex}"/></animateMotion></circle>')
+    ox, oy = 190, 134
+    w2, h2 = 23, 9.5
+    heights = [0, 8, 15, 22, 29]
 
-    for (x, y, lab, cap) in inp:
-        s.append(f'<circle cx="{x}" cy="{y}" r="14" fill="{p["bg"]}" stroke="{p["accent"]}" stroke-width="1.6"/>')
-        s.append(f'<text x="{x}" y="{y + 4}" font-size="11" text-anchor="middle" class="acc" '
-                 f'font-weight="700">{lab}</text>')
-        s.append(f'<text x="{x}" y="{y + 30}" font-size="7.5" text-anchor="middle" class="faint">{cap}</text>')
-    for (x, y) in h1 + h2:
-        s.append(f'<circle cx="{x}" cy="{y}" r="12" fill="{p["bg"]}" stroke="{p["accent2"]}" stroke-width="1.2"/>')
-    for (x, y, lab) in out:
-        s.append(f'<circle cx="{x}" cy="{y}" r="13" fill="{p["bg"]}" stroke="{p["accent3"]}" stroke-width="1.6"/>')
-        s.append(f'<text x="{x}" y="{y + 3}" font-size="7.5" text-anchor="middle" fill="{p["accent3"]}">{lab}</text>')
-        s.append(f'<text x="{x}" y="{y + 30}" font-size="7.5" text-anchor="middle" class="faint">act</text>')
+    # month labels along the top edge (first week of each month)
+    for c in range(WEEKS):
+        day0 = cols[c][0][0]
+        if c == 0 or day0.month != cols[c - 1][0][0].month:
+            mx, my = ox + c * w2, oy + c * h2 - 26
+            s.append(f'<text x="{mx:.0f}" y="{my:.0f}" font-size="9" text-anchor="middle" '
+                     f'class="faint">{day0.strftime("%b").upper()}</text>')
 
-    s.append(f'<line x1="225" y1="122" x2="225" y2="402" stroke="{p["stroke"]}" stroke-dasharray="2 4"/>')
-    s.append(f'<line x1="330" y1="122" x2="330" y2="402" stroke="{p["stroke"]}" stroke-dasharray="2 4"/>')
-    s.append(f'<text x="277" y="428" font-size="8" text-anchor="middle" class="faint">'
-             f'backbone \u00b7 transformer \u2014 cross-attn fusion</text>')
-    s.append(f'<text x="40" y="448" font-size="8" class="faint">task: manipulation</text>')
-    s.append(f'<text x="480" y="448" font-size="8" text-anchor="end" class="faint">sim: Isaac Lab</text>')
-    s.append(f'<text x="40" y="462" font-size="8" class="faint">loop: 100 Hz</text>')
-    s.append(f'<text x="480" y="462" font-size="8" text-anchor="end" class="faint">lat: 8.3 ms</text>')
+    # tiles + blocks, painter-ordered back → front
+    today_xy = None
+    for depth in range(WEEKS + 6):
+        for c in range(WEEKS):
+            r = depth - c
+            if not 0 <= r <= 6:
+                continue
+            day, score = cols[c][r]
+            cx = ox + (c - r) * w2
+            cy = oy + (c + r) * h2
+            lv = level(score)
+            H = heights[lv]
+            if day == today:
+                today_xy = (cx, cy, H)
+            base = LEVELS[lv - 1] if lv else None
+            if H == 0:
+                s.append(f'<polygon points="{cx},{cy - h2} {cx + w2},{cy} {cx},{cy + h2} '
+                         f'{cx - w2},{cy}" fill="{p["tile"]}" stroke="{p["tile_stroke"]}" '
+                         f'stroke-width="0.6"/>')
+            else:
+                fc_top = base
+                fc_right = shade(base, 0.80)
+                fc_left = shade(base, 0.58)
+                s.append(f'<polygon points="{cx - w2},{cy - H} {cx},{cy + h2 - H} {cx},{cy + h2} '
+                         f'{cx - w2},{cy}" fill="{fc_left}"/>')
+                s.append(f'<polygon points="{cx + w2},{cy - H} {cx},{cy + h2 - H} {cx},{cy + h2} '
+                         f'{cx + w2},{cy}" fill="{fc_right}"/>')
+                s.append(f'<polygon points="{cx},{cy - h2 - H} {cx + w2},{cy - H} {cx},{cy + h2 - H} '
+                         f'{cx - w2},{cy - H}" fill="{fc_top}"/>')
 
-    # ---------- panel 2 : telemetry chips
-    s.append(f'<rect x="524" y="88" width="652" height="118" rx="10" fill="{p["panel"]}" stroke="{p["stroke"]}"/>')
-    s.append(f'<text x="540" y="112" class="h dim">TELEMETRY <tspan class="acc">// github stream</tspan></text>')
-    for (label, value, sub), x in zip(chips, chip_xs):
-        s.append(f'<rect x="{x}" y="124" width="144" height="70" rx="8" fill="{p["bg"]}" stroke="{p["stroke"]}"/>')
-        s.append(f'<text x="{x + 12}" y="142" font-size="8" letter-spacing="1.5" class="faint">{label}</text>')
-        s.append(f'<text x="{x + 12}" y="168" font-size="21" font-weight="700" class="acc">{value}</text>')
-        s.append(f'<text x="{x + 12}" y="184" font-size="7.5" class="faint">{esc(sub)}</text>')
+    # pulse ring on today's tile
+    if today_xy:
+        cx, cy, H = today_xy
+        s.append(f'<polygon points="{cx},{cy - h2 - H} {cx + w2},{cy - H} {cx},{cy + h2 - H} '
+                 f'{cx - w2},{cy - H}" fill="none" stroke="{p["good"]}" stroke-width="1.6">'
+                 f'<animate attributeName="opacity" values="1;0.15;1" dur="1.8s" '
+                 f'repeatCount="indefinite"/></polygon>')
 
-    # ---------- panel 3 : reward grid
-    s.append(f'<rect x="524" y="222" width="652" height="150" rx="10" fill="{p["panel"]}" stroke="{p["stroke"]}"/>')
-    s.append(f'<text x="540" y="246" class="h dim">REWARD CURVE <tspan class="acc">// {WEEKS} wks of push signal</tspan></text>')
-    s.append(f'<text x="1160" y="246" font-size="8" text-anchor="end" class="faint">'
-             f'{d.get("active_days", 0)} active days</text>')
-    op = [0, 0.4, 0.65, 0.85, 1.0]
-    for (day, score, x, y) in grid:
-        lv = level(score)
-        if lv == 0:
-            s.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.3" fill="{p["empty"]}"/>')
-        else:
-            s.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.9" fill="{p["accent"]}" '
-                     f'opacity="{op[lv]}"/>')
-    if last_active:
-        lx, ly = last_active[2], last_active[3]
-        s.append(f'<circle cx="{lx:.1f}" cy="{ly:.1f}" r="6.5" fill="none" stroke="{p["good"]}" '
-                 f'stroke-width="1.4"><animate attributeName="r" values="4;9" dur="1.6s" '
-                 f'repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" '
-                 f'dur="1.6s" repeatCount="indefinite"/></circle>')
-    s.append(f'<text x="540" y="366" font-size="7.5" class="faint">{WEEKS} wks ago</text>')
-    s.append(f'<text x="1160" y="366" font-size="7.5" text-anchor="end" class="faint">today</text>')
+    # stats column (right side of hero)
+    sx = 800
+    s.append(f'<text x="{sx}" y="120" font-size="10" letter-spacing="2" class="dim" '
+             f'font-weight="600">CONTRIBUTIONS <tspan fill="{p["green"]}">// {WEEKS} WKS</tspan></text>')
+    s.append(f'<text x="{sx}" y="170" font-size="42" font-weight="700" fill="{p["green"]}">{total}</text>')
+    s.append(f'<text x="{sx}" y="192" font-size="9" class="faint">push events · public signal</text>')
+    rows = [("best streak", f"{best}d"), ("highest / day", str(highest)),
+            ("average / day", f"{avg:.1f}"), ("public repos", str(d.get("repos_public", 0)))]
+    ry = 232
+    for label, val in rows:
+        s.append(f'<text x="{sx}" y="{ry}" font-size="10" class="dim">{label}</text>')
+        s.append(f'<text x="1160" y="{ry}" font-size="10" text-anchor="end" '
+                 f'fill="{p["text"]}">{esc(val)}</text>')
+        ry += 24
+    # legend: flat tile + 4 green levels
+    ly = 400
+    lx = sx
+    s.append(f'<text x="{lx}" y="{ly}" font-size="8" class="faint">less</text>')
+    lx += 26
+    tiles = [p["tile"]] + LEVELS
+    for col in tiles:
+        s.append(f'<polygon points="{lx},{ly - 8} {lx + 8},{ly - 4} {lx},{ly} {lx - 8},{ly - 4}" '
+                 f'fill="{col}" stroke="{p["tile_stroke"]}" stroke-width="0.5"/>')
+        lx += 22
+    s.append(f'<text x="{lx + 2}" y="{ly - 2}" font-size="8" class="faint">more</text>')
 
-    # ---------- panel 4 : context mix (languages)
-    s.append(f'<rect x="524" y="388" width="652" height="80" rx="10" fill="{p["panel"]}" stroke="{p["stroke"]}"/>')
-    s.append(f'<text x="540" y="410" class="h dim">CONTEXT MIX <tspan class="acc">// language tokens</tspan></text>')
-    bx, by, bw, bh = 540, 420, 620, 13
-    s.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="6.5" fill="{p["empty"]}"/>')
+    # ---------- bottom left: languages
+    s.append(f'<rect x="24" y="450" width="640" height="136" rx="10" fill="{p["panel"]}" '
+             f'stroke="{p["stroke"]}"/>')
+    s.append(f'<text x="40" y="476" font-size="10" letter-spacing="2" class="dim" '
+             f'font-weight="600">LANGUAGES</text>')
+    bx, by, bw, bh = 40, 492, 608, 16
+    s.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="8" fill="{shade(p["panel"], 0.92) if not light else "#eaeef2"}" '
+             f'stroke="{p["stroke"]}" stroke-width="0.6"/>')
     seg_x = bx
-    segs = [(name, n / total, lang_colors[i]) for i, (name, n) in enumerate(top)]
-    if other:
-        segs.append(("other", other / total, lang_colors[5]))
-    for name, frac, col in segs:
-        w = max(2.0, bw * frac)
-        s.append(f'<rect x="{seg_x:.1f}" y="{by + 1}" width="{w:.1f}" height="{bh - 2}" fill="{col}" opacity="0.9"/>')
+    for i, (name, n) in enumerate(top):
+        w = max(2.0, bw * n / ltotal)
+        s.append(f'<rect x="{seg_x:.1f}" y="{by + 1.5}" width="{w:.1f}" height="{bh - 3}" '
+                 f'fill="{LANG_COLORS[i]}" opacity="0.95"/>')
         seg_x += w
     lx = bx
     for i, (name, n) in enumerate(top):
-        pct = round(100 * n / total)
+        pct = round(100 * n / ltotal)
         if pct < 1:
             continue
         label = f"{name} {pct}%"
-        s.append(f'<circle cx="{lx + 3:.1f}" cy="449" r="3" fill="{lang_colors[i]}"/>')
-        s.append(f'<text x="{lx + 10:.1f}" y="452" font-size="8" class="dim">{esc(label)}</text>')
-        lx += 10 + len(label) * 4.9 + 14
+        s.append(f'<circle cx="{lx + 3:.1f}" cy="534" r="3" fill="{LANG_COLORS[i]}"/>')
+        s.append(f'<text x="{lx + 10:.1f}" y="537" font-size="9" class="dim">{esc(label)}</text>')
+        lx += 10 + len(label) * 5.4 + 16
 
-    # ---------- panel 5 : edge fleet
-    s.append(f'<rect x="24" y="484" width="1152" height="88" rx="10" fill="{p["panel"]}" stroke="{p["stroke"]}"/>')
-    s.append(f'<text x="40" y="508" class="h dim">EDGE FLEET <tspan class="acc">// deploy targets</tspan></text>')
-    fleet = [
-        ("RPI-5", "online", "led"),
-        ("DEV-BOARDS", "online", "led2"),
-        ("WIFI-NET", "ku-wl \u00b7 autologin", "led3"),
-    ]
-    fx = 40
-    for name, status, led in fleet:
-        wch = 26 + len(name) * 8 + len(status) * 5
-        s.append(f'<rect x="{fx}" y="522" width="{wch}" height="32" rx="16" fill="{p["bg"]}" stroke="{p["stroke"]}"/>')
-        s.append(f'<circle cx="{fx + 18}" cy="538" r="4" fill="{p["good"]}" class="{led}"/>')
-        s.append(f'<text x="{fx + 30}" y="536" font-size="9.5" class="t" font-weight="600">{name}</text>')
-        s.append(f'<text x="{fx + 30}" y="548" font-size="7" class="faint">{status}</text>')
-        fx += wch + 14
-    s.append(f'<text x="1160" y="540" font-size="8.5" text-anchor="end" class="dim">'
-             f'deploy path: sim (Isaac Lab) \u2192 export \u2192 edge (Pi 5)</text>')
+    # ---------- bottom right: minimal neural accent (no labels)
+    s.append(f'<rect x="684" y="450" width="492" height="136" rx="10" fill="{p["panel"]}" '
+             f'stroke="{p["stroke"]}"/>')
+    inp = [(724, 486), (724, 518), (724, 550)]
+    hid = [(930, 470), (930, 502), (930, 534), (930, 566)]
+    outp = [(1132, 494), (1132, 542)]
+    net_edges = []
+    for (x1, y1) in inp:
+        for (x2, y2) in hid:
+            net_edges.append((x1 + 7, y1, x2 - 6, y2))
+    for (x1, y1) in hid:
+        for (x2, y2) in outp:
+            net_edges.append((x1 + 6, y1, x2 - 8, y2))
+    for i, (x1, y1, x2, y2) in enumerate(net_edges):
+        s.append(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{p["stroke"]}" '
+                 f'stroke-width="0.8"/>')
+    for (x, y) in inp:
+        s.append(f'<circle cx="{x}" cy="{y}" r="7" fill="{p["bg"]}" stroke="{p["green"]}" stroke-width="1.4"/>')
+    for (x, y) in hid:
+        s.append(f'<circle cx="{x}" cy="{y}" r="6" fill="{p["bg"]}" stroke="{p["dim"]}" stroke-width="1.1"/>')
+    for (x, y) in outp:
+        s.append(f'<circle cx="{x}" cy="{y}" r="8" fill="{p["bg"]}" stroke="{p["green"]}" stroke-width="1.4"/>')
+    for i, idx in enumerate([0, 6, 9, 14, 17, 20, 24, 26]):
+        if idx >= len(net_edges):
+            continue
+        x1, y1, x2, y2 = net_edges[idx]
+        eid = f"n{idx}"
+        s.append(f'<path id="{eid}" d="M{x1} {y1} L{x2} {y2}" fill="none"/>')
+        s.append(f'<circle r="2.2" fill="{p["green"]}">'
+                 f'<animateMotion dur="{1.6 + (i % 4) * 0.5:.2f}s" begin="{(i * 0.45) % 2.2:.2f}s" '
+                 f'repeatCount="indefinite"><mpath href="#{eid}"/></animateMotion></circle>')
 
-    # ---------- footer
-    s.append(f'<text x="28" y="606" font-size="8" class="faint">'
-             f'auto-regen: GitHub Actions \u00b7 daily 03:37 UTC \u00b7 on push</text>')
-    s.append(f'<text x="1172" y="606" font-size="8" text-anchor="end" class="faint">'
-             f'policy: curiosity-driven \u00b7 \u00a9 {now.year} thyjeff</text>')
+    # ---------- footer: edge fleet chips + regen note
+    chips = [("RPI-5", "led"), ("DEV BOARDS", "led2"), ("WIFI · AUTOLOGIN", "led3")]
+    fx = 30
+    for name, led in chips:
+        s.append(f'<circle cx="{fx}" cy="612" r="4" fill="{p["good"]}" class="{led}"/>')
+        s.append(f'<text x="{fx + 12}" y="616" font-size="9.5" class="dim">{name}</text>')
+        fx += 12 + len(name) * 5.8 + 26
+    s.append(f'<text x="1172" y="616" font-size="8.5" text-anchor="end" class="faint">'
+             f'auto-regen · github actions · 03:37 utc</text>')
 
     s.append("</svg>")
     return "\n".join(s)
@@ -375,12 +358,13 @@ def main():
     data = collect()
     with open(os.path.join(ASSETS, "data.json"), "w") as f:
         json.dump(data, f, indent=1, sort_keys=True)
-    for name, pal in (("dashboard.svg", DARK), ("dashboard-light.svg", LIGHT)):
-        svg = render(data, pal, light=pal is LIGHT)
+    for name, pal, light in (("dashboard.svg", DARK, False),
+                             ("dashboard-light.svg", LIGHT, True)):
+        svg = render(data, pal, light=light)
         with open(os.path.join(ASSETS, name), "w") as f:
             f.write(svg)
         print(f"wrote assets/{name} ({len(svg) // 1024} KB)")
-    print("snapshot:", {k: data[k] for k in ("repos_public", "stars", "followers", "active_days")})
+    print("snapshot:", {"repos_public": data.get("repos_public"), "since": data.get("since")})
 
 
 if __name__ == "__main__":

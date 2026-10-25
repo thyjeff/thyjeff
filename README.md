@@ -39,28 +39,13 @@ watch packets for fun, and make small boards do things they shouldn't.
 
 `edge` ![Raspberry Pi](https://img.shields.io/badge/Raspberry_Pi_5-a2281c?style=flat-square&logo=raspberrypi&logoColor=white) ![UART/I2C/SPI](https://img.shields.io/badge/UART%2FI2C%2FSPI-22d3ee?style=flat-square)
 
-### 🚀 shipped
-
-| repo | what it does | |
-|---|---|---|
-| [opencodex](https://github.com/thyjeff/opencodex) | use any provider or model inside Codex App | ![stars](https://img.shields.io/github/stars/thyjeff/opencodex?style=flat-square&color=22d3ee) |
-| [ku-wl-auto-login](https://github.com/thyjeff/ku-wl-auto-login) | auto-login for Karunya University WiFi — never type it again | ![stars](https://img.shields.io/github/stars/thyjeff/ku-wl-auto-login?style=flat-square&color=22d3ee) |
-| [model-hub](https://github.com/thyjeff/model-hub) | unified AI model gateway — Claude, Gemini, Ollama, OpenAI | ![stars](https://img.shields.io/github/stars/thyjeff/model-hub?style=flat-square&color=22d3ee) |
-| [appagent](https://github.com/thyjeff/appagent) | on-device agent (Kotlin) | ![stars](https://img.shields.io/github/stars/thyjeff/appagent?style=flat-square&color=22d3ee) |
-| [chatgpt-desktop-mcp](https://github.com/thyjeff/chatgpt-desktop-mcp) | ChatGPT Desktop MCP — terminal + filesystem | ![stars](https://img.shields.io/github/stars/thyjeff/chatgpt-desktop-mcp?style=flat-square&color=22d3ee) |
-| [classroom-plugin](https://github.com/thyjeff/classroom-plugin) | Google Classroom uploads from the CLI | ![stars](https://img.shields.io/github/stars/thyjeff/classroom-plugin?style=flat-square&color=22d3ee) |
-
-…plus forks I study: [Isaac-GR00T](https://github.com/thyjeff/Isaac-GR00T) (NVIDIA's foundation
-model for generalist robots) and [inference](https://github.com/thyjeff/inference) (edge-device
-AI command center).
-
 ### ⚡ the console above
 
 The dashboard at the top isn't a static image — it's a **self-updating animated SVG**:
 
-- a VLA policy network with activations pulsing from sensors → transformer → actions
-- live telemetry (repos, stars, followers) and a 12-week push-signal reward curve
-- context mix = your language distribution; edge fleet = my deploy targets
+- a 3D isometric contribution calendar in GitHub greens — blocks rise with daily push signal
+- a minimal neural net accent with activations pulsing through
+- language mix + edge fleet line (Pi 5 · dev boards · WiFi autologin)
 - **regenerates itself daily** via [GitHub Actions](.github/workflows/metrics.yml) — `03:37 UTC`
 - adapts to dark / light mode automatically
 

@@ -1,0 +1,252 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-label="thyjeff embodied-AI console — live GitHub metrics">
+<title>thyjeff // embodied-ai console</title>
+<style>
+text { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace; }
+.t   { fill: #e6edf3; }
+.dim { fill: #8b99a6; }
+.faint{ fill: #54626f; }
+.acc { fill: #22d3ee; }
+.h   { font-size: 11px; letter-spacing: 2px; font-weight: 600; }
+@keyframes led { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+.led { animation: led 2.2s infinite; }
+.led2 { animation: led 2.2s .7s infinite; }
+.led3 { animation: led 2.2s 1.4s infinite; }
+</style>
+<defs><pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#16202a"/></pattern><linearGradient id="scan" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22d3ee" stop-opacity="0"/><stop offset=".5" stop-color="#22d3ee" stop-opacity=".06"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></linearGradient><linearGradient id="titlegrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs>
+<rect width="1200" height="640" rx="14" fill="#0b0f14"/>
+<rect width="1200" height="640" rx="14" fill="url(#dots)"/>
+<rect width="1200" height="140" fill="url(#scan)"><animateTransform attributeName="transform" type="translate" from="0 -140" to="0 640" dur="9s" repeatCount="indefinite"/></rect>
+<text x="28" y="42" font-size="19" font-weight="700" fill="url(#titlegrad)">&#9648; thyjeff <tspan fill="#8b99a6" font-weight="400">// embodied-ai console</tspan></text>
+<circle cx="938" cy="37" r="4" fill="#34d399" class="led"/>
+<text x="950" y="41" font-size="10" class="dim">sys:nominal</text>
+<text x="1172" y="41" font-size="9" text-anchor="end" class="faint">ckpt 20261025.1624Z</text>
+<line x1="24" y1="62" x2="1176" y2="62" stroke="#1e2a36"/>
+<rect x="24" y="88" width="476" height="384" rx="10" fill="#10161d" stroke="#1e2a36"/>
+<text x="40" y="112" class="h dim">VLA POLICY <tspan class="acc">// live inference</tspan></text>
+<path id="e1" d="M102 170 L213 130" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e2" d="M102 170 L213 218" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e3" d="M102 170 L213 306" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e4" d="M102 170 L213 394" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e5" d="M102 268 L213 130" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e6" d="M102 268 L213 218" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e7" d="M102 268 L213 306" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e8" d="M102 268 L213 394" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e9" d="M102 366 L213 130" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e10" d="M102 366 L213 218" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e11" d="M102 366 L213 306" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e12" d="M102 366 L213 394" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e13" d="M237 130 L318 130" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e14" d="M237 130 L318 218" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e15" d="M237 130 L318 306" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e16" d="M237 130 L318 394" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e17" d="M237 218 L318 130" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e18" d="M237 218 L318 218" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e19" d="M237 218 L318 306" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e20" d="M237 218 L318 394" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e21" d="M237 306 L318 130" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e22" d="M237 306 L318 218" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e23" d="M237 306 L318 306" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e24" d="M237 306 L318 394" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e25" d="M237 394 L318 130" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e26" d="M237 394 L318 218" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e27" d="M237 394 L318 306" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e28" d="M237 394 L318 394" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e29" d="M342 130 L412 170" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e30" d="M342 130 L412 268" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e31" d="M342 130 L412 366" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e32" d="M342 218 L412 170" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e33" d="M342 218 L412 268" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e34" d="M342 218 L412 366" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e35" d="M342 306 L412 170" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e36" d="M342 306 L412 268" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e37" d="M342 306 L412 366" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e38" d="M342 394 L412 170" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e39" d="M342 394 L412 268" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<path id="e40" d="M342 394 L412 366" stroke="#1e2a36" stroke-width="1" fill="none"/>
+<circle r="2.6" fill="#22d3ee"><animateMotion dur="1.90s" begin="0.00s" repeatCount="indefinite"><mpath href="#e1"/></animateMotion></circle>
+<circle r="2.6" fill="#a78bfa"><animateMotion dur="2.35s" begin="0.37s" repeatCount="indefinite"><mpath href="#e9"/></animateMotion></circle>
+<circle r="2.6" fill="#fbbf24"><animateMotion dur="2.80s" begin="0.74s" repeatCount="indefinite"><mpath href="#e13"/></animateMotion></circle>
+<circle r="2.6" fill="#22d3ee"><animateMotion dur="3.25s" begin="1.11s" repeatCount="indefinite"><mpath href="#e18"/></animateMotion></circle>
+<circle r="2.6" fill="#a78bfa"><animateMotion dur="1.90s" begin="1.48s" repeatCount="indefinite"><mpath href="#e22"/></animateMotion></circle>
+<circle r="2.6" fill="#fbbf24"><animateMotion dur="2.35s" begin="1.85s" repeatCount="indefinite"><mpath href="#e28"/></animateMotion></circle>
+<circle r="2.6" fill="#22d3ee"><animateMotion dur="2.80s" begin="2.22s" repeatCount="indefinite"><mpath href="#e31"/></animateMotion></circle>
+<circle r="2.6" fill="#a78bfa"><animateMotion dur="3.25s" begin="0.19s" repeatCount="indefinite"><mpath href="#e35"/></animateMotion></circle>
+<circle r="2.6" fill="#fbbf24"><animateMotion dur="1.90s" begin="0.56s" repeatCount="indefinite"><mpath href="#e40"/></animateMotion></circle>
+<circle cx="88" cy="170" r="14" fill="#0b0f14" stroke="#22d3ee" stroke-width="1.6"/>
+<text x="88" y="174" font-size="11" text-anchor="middle" class="acc" font-weight="700">V</text>
+<text x="88" y="200" font-size="7.5" text-anchor="middle" class="faint">VISION</text>
+<circle cx="88" cy="268" r="14" fill="#0b0f14" stroke="#22d3ee" stroke-width="1.6"/>
+<text x="88" y="272" font-size="11" text-anchor="middle" class="acc" font-weight="700">L</text>
+<text x="88" y="298" font-size="7.5" text-anchor="middle" class="faint">LANGUAGE</text>
+<circle cx="88" cy="366" r="14" fill="#0b0f14" stroke="#22d3ee" stroke-width="1.6"/>
+<text x="88" y="370" font-size="11" text-anchor="middle" class="acc" font-weight="700">S</text>
+<text x="88" y="396" font-size="7.5" text-anchor="middle" class="faint">STATE</text>
+<circle cx="225" cy="130" r="12" fill="#0b0f14" stroke="#a78bfa" stroke-width="1.2"/>
+<circle cx="225" cy="218" r="12" fill="#0b0f14" stroke="#a78bfa" stroke-width="1.2"/>
+<circle cx="225" cy="306" r="12" fill="#0b0f14" stroke="#a78bfa" stroke-width="1.2"/>
+<circle cx="225" cy="394" r="12" fill="#0b0f14" stroke="#a78bfa" stroke-width="1.2"/>
+<circle cx="330" cy="130" r="12" fill="#0b0f14" stroke="#a78bfa" stroke-width="1.2"/>
+<circle cx="330" cy="218" r="12" fill="#0b0f14" stroke="#a78bfa" stroke-width="1.2"/>
+<circle cx="330" cy="306" r="12" fill="#0b0f14" stroke="#a78bfa" stroke-width="1.2"/>
+<circle cx="330" cy="394" r="12" fill="#0b0f14" stroke="#a78bfa" stroke-width="1.2"/>
+<circle cx="425" cy="170" r="13" fill="#0b0f14" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="425" y="173" font-size="7.5" text-anchor="middle" fill="#fbbf24">Δx</text>
+<text x="425" y="200" font-size="7.5" text-anchor="middle" class="faint">act</text>
+<circle cx="425" cy="268" r="13" fill="#0b0f14" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="425" y="271" font-size="7.5" text-anchor="middle" fill="#fbbf24">Δθ</text>
+<text x="425" y="298" font-size="7.5" text-anchor="middle" class="faint">act</text>
+<circle cx="425" cy="366" r="13" fill="#0b0f14" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="425" y="369" font-size="7.5" text-anchor="middle" fill="#fbbf24">grip</text>
+<text x="425" y="396" font-size="7.5" text-anchor="middle" class="faint">act</text>
+<line x1="225" y1="122" x2="225" y2="402" stroke="#1e2a36" stroke-dasharray="2 4"/>
+<line x1="330" y1="122" x2="330" y2="402" stroke="#1e2a36" stroke-dasharray="2 4"/>
+<text x="277" y="428" font-size="8" text-anchor="middle" class="faint">backbone · transformer — cross-attn fusion</text>
+<text x="40" y="448" font-size="8" class="faint">task: manipulation</text>
+<text x="480" y="448" font-size="8" text-anchor="end" class="faint">sim: Isaac Lab</text>
+<text x="40" y="462" font-size="8" class="faint">loop: 100 Hz</text>
+<text x="480" y="462" font-size="8" text-anchor="end" class="faint">lat: 8.3 ms</text>
+<rect x="524" y="88" width="652" height="118" rx="10" fill="#10161d" stroke="#1e2a36"/>
+<text x="540" y="112" class="h dim">TELEMETRY <tspan class="acc">// github stream</tspan></text>
+<rect x="540" y="124" width="144" height="70" rx="8" fill="#0b0f14" stroke="#1e2a36"/>
+<text x="552" y="142" font-size="8" letter-spacing="1.5" class="faint">PUBLIC REPOS</text>
+<text x="552" y="168" font-size="21" font-weight="700" class="acc">13</text>
+<text x="552" y="184" font-size="7.5" class="faint">code under version control</text>
+<rect x="699" y="124" width="144" height="70" rx="8" fill="#0b0f14" stroke="#1e2a36"/>
+<text x="711" y="142" font-size="8" letter-spacing="1.5" class="faint">STARS EARNED</text>
+<text x="711" y="168" font-size="21" font-weight="700" class="acc">20</text>
+<text x="711" y="184" font-size="7.5" class="faint">across all repos</text>
+<rect x="858" y="124" width="144" height="70" rx="8" fill="#0b0f14" stroke="#1e2a36"/>
+<text x="870" y="142" font-size="8" letter-spacing="1.5" class="faint">FOLLOWERS</text>
+<text x="870" y="168" font-size="21" font-weight="700" class="acc">2</text>
+<text x="870" y="184" font-size="7.5" class="faint">signal listeners</text>
+<rect x="1017" y="124" width="144" height="70" rx="8" fill="#0b0f14" stroke="#1e2a36"/>
+<text x="1029" y="142" font-size="8" letter-spacing="1.5" class="faint">ONLINE FOR</text>
+<text x="1029" y="168" font-size="21" font-weight="700" class="acc">2.1y</text>
+<text x="1029" y="184" font-size="7.5" class="faint">since 2024-09</text>
+<rect x="524" y="222" width="652" height="150" rx="10" fill="#10161d" stroke="#1e2a36"/>
+<text x="540" y="246" class="h dim">REWARD CURVE <tspan class="acc">// 12 wks of push signal</tspan></text>
+<text x="1160" y="246" font-size="8" text-anchor="end" class="faint">5 active days</text>
+<circle cx="540.0" cy="264.0" r="2.3" fill="#1a2530"/>
+<circle cx="547.4" cy="277.2" r="2.3" fill="#1a2530"/>
+<circle cx="554.7" cy="290.4" r="2.3" fill="#1a2530"/>
+<circle cx="562.0" cy="303.6" r="2.3" fill="#1a2530"/>
+<circle cx="569.4" cy="316.8" r="2.3" fill="#1a2530"/>
+<circle cx="576.8" cy="330.0" r="2.3" fill="#1a2530"/>
+<circle cx="584.1" cy="343.2" r="2.3" fill="#1a2530"/>
+<circle cx="591.5" cy="264.0" r="2.3" fill="#1a2530"/>
+<circle cx="598.8" cy="277.2" r="2.3" fill="#1a2530"/>
+<circle cx="606.1" cy="290.4" r="2.3" fill="#1a2530"/>
+<circle cx="613.5" cy="303.6" r="2.3" fill="#1a2530"/>
+<circle cx="620.9" cy="316.8" r="2.3" fill="#1a2530"/>
+<circle cx="628.2" cy="330.0" r="2.3" fill="#1a2530"/>
+<circle cx="635.5" cy="343.2" r="2.3" fill="#1a2530"/>
+<circle cx="642.9" cy="264.0" r="2.3" fill="#1a2530"/>
+<circle cx="650.2" cy="277.2" r="2.3" fill="#1a2530"/>
+<circle cx="657.6" cy="290.4" r="2.3" fill="#1a2530"/>
+<circle cx="665.0" cy="303.6" r="2.9" fill="#22d3ee" opacity="0.4"/>
+<circle cx="672.3" cy="316.8" r="2.3" fill="#1a2530"/>
+<circle cx="679.6" cy="330.0" r="2.3" fill="#1a2530"/>
+<circle cx="687.0" cy="343.2" r="2.3" fill="#1a2530"/>
+<circle cx="694.4" cy="264.0" r="2.3" fill="#1a2530"/>
+<circle cx="701.7" cy="277.2" r="2.3" fill="#1a2530"/>
+<circle cx="709.0" cy="290.4" r="2.3" fill="#1a2530"/>
+<circle cx="716.4" cy="303.6" r="2.3" fill="#1a2530"/>
+<circle cx="723.8" cy="316.8" r="2.9" fill="#22d3ee" opacity="0.4"/>
+<circle cx="731.1" cy="330.0" r="2.3" fill="#1a2530"/>
+<circle cx="738.5" cy="343.2" r="2.3" fill="#1a2530"/>
+<circle cx="745.8" cy="264.0" r="2.3" fill="#1a2530"/>
+<circle cx="753.1" cy="277.2" r="2.3" fill="#1a2530"/>
+<circle cx="760.5" cy="290.4" r="2.3" fill="#1a2530"/>
+<circle cx="767.9" cy="303.6" r="2.3" fill="#1a2530"/>
+<circle cx="775.2" cy="316.8" r="2.3" fill="#1a2530"/>
+<circle cx="782.5" cy="330.0" r="2.3" fill="#1a2530"/>
+<circle cx="789.9" cy="343.2" r="2.3" fill="#1a2530"/>
+<circle cx="797.2" cy="264.0" r="2.3" fill="#1a2530"/>
+<circle cx="804.6" cy="277.2" r="2.3" fill="#1a2530"/>
+<circle cx="812.0" cy="290.4" r="2.3" fill="#1a2530"/>
+<circle cx="819.3" cy="303.6" r="2.3" fill="#1a2530"/>
+<circle cx="826.6" cy="316.8" r="2.3" fill="#1a2530"/>
+<circle cx="834.0" cy="330.0" r="2.3" fill="#1a2530"/>
+<circle cx="841.3" cy="343.2" r="2.3" fill="#1a2530"/>
+<circle cx="848.7" cy="264.0" r="2.3" fill="#1a2530"/>
+<circle cx="856.0" cy="277.2" r="2.3" fill="#1a2530"/>
+<circle cx="863.4" cy="290.4" r="2.3" fill="#1a2530"/>
+<circle cx="870.8" cy="303.6" r="2.3" fill="#1a2530"/>
+<circle cx="878.1" cy="316.8" r="2.3" fill="#1a2530"/>
+<circle cx="885.5" cy="330.0" r="2.3" fill="#1a2530"/>
+<circle cx="892.8" cy="343.2" r="2.3" fill="#1a2530"/>
+<circle cx="900.1" cy="264.0" r="2.3" fill="#1a2530"/>
+<circle cx="907.5" cy="277.2" r="2.3" fill="#1a2530"/>
+<circle cx="914.8" cy="290.4" r="2.3" fill="#1a2530"/>
+<circle cx="922.2" cy="303.6" r="2.3" fill="#1a2530"/>
+<circle cx="929.5" cy="316.8" r="2.3" fill="#1a2530"/>
+<circle cx="936.9" cy="330.0" r="2.3" fill="#1a2530"/>
+<circle cx="944.2" cy="343.2" r="2.3" fill="#1a2530"/>
+<circle cx="951.6" cy="264.0" r="2.3" fill="#1a2530"/>
+<circle cx="959.0" cy="277.2" r="2.3" fill="#1a2530"/>
+<circle cx="966.3" cy="290.4" r="2.3" fill="#1a2530"/>
+<circle cx="973.6" cy="303.6" r="2.3" fill="#1a2530"/>
+<circle cx="981.0" cy="316.8" r="2.3" fill="#1a2530"/>
+<circle cx="988.3" cy="330.0" r="2.3" fill="#1a2530"/>
+<circle cx="995.7" cy="343.2" r="2.3" fill="#1a2530"/>
+<circle cx="1003.0" cy="264.0" r="2.3" fill="#1a2530"/>
+<circle cx="1010.4" cy="277.2" r="2.3" fill="#1a2530"/>
+<circle cx="1017.8" cy="290.4" r="2.3" fill="#1a2530"/>
+<circle cx="1025.1" cy="303.6" r="2.3" fill="#1a2530"/>
+<circle cx="1032.5" cy="316.8" r="2.3" fill="#1a2530"/>
+<circle cx="1039.8" cy="330.0" r="2.3" fill="#1a2530"/>
+<circle cx="1047.2" cy="343.2" r="2.3" fill="#1a2530"/>
+<circle cx="1054.5" cy="264.0" r="2.9" fill="#22d3ee" opacity="0.4"/>
+<circle cx="1061.8" cy="277.2" r="2.3" fill="#1a2530"/>
+<circle cx="1069.2" cy="290.4" r="2.9" fill="#22d3ee" opacity="0.4"/>
+<circle cx="1076.5" cy="303.6" r="2.3" fill="#1a2530"/>
+<circle cx="1083.9" cy="316.8" r="2.9" fill="#22d3ee" opacity="0.4"/>
+<circle cx="1091.2" cy="330.0" r="2.3" fill="#1a2530"/>
+<circle cx="1098.6" cy="343.2" r="2.3" fill="#1a2530"/>
+<circle cx="1105.9" cy="264.0" r="2.3" fill="#1a2530"/>
+<circle cx="1113.3" cy="277.2" r="2.3" fill="#1a2530"/>
+<circle cx="1120.7" cy="290.4" r="2.3" fill="#1a2530"/>
+<circle cx="1128.0" cy="303.6" r="2.3" fill="#1a2530"/>
+<circle cx="1135.3" cy="316.8" r="2.3" fill="#1a2530"/>
+<circle cx="1142.7" cy="330.0" r="2.3" fill="#1a2530"/>
+<circle cx="1150.0" cy="343.2" r="2.3" fill="#1a2530"/>
+<circle cx="1083.9" cy="316.8" r="6.5" fill="none" stroke="#34d399" stroke-width="1.4"><animate attributeName="r" values="4;9" dur="1.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="1.6s" repeatCount="indefinite"/></circle>
+<text x="540" y="366" font-size="7.5" class="faint">12 wks ago</text>
+<text x="1160" y="366" font-size="7.5" text-anchor="end" class="faint">today</text>
+<rect x="524" y="388" width="652" height="80" rx="10" fill="#10161d" stroke="#1e2a36"/>
+<text x="540" y="410" class="h dim">CONTEXT MIX <tspan class="acc">// language tokens</tspan></text>
+<rect x="540" y="420" width="620" height="13" rx="6.5" fill="#1a2530"/>
+<rect x="540.0" y="421" width="322.9" height="11" fill="#22d3ee" opacity="0.9"/>
+<rect x="862.9" y="421" width="128.9" height="11" fill="#a78bfa" opacity="0.9"/>
+<rect x="991.8" y="421" width="94.5" height="11" fill="#fbbf24" opacity="0.9"/>
+<rect x="1086.3" y="421" width="55.9" height="11" fill="#34d399" opacity="0.9"/>
+<rect x="1142.3" y="421" width="13.7" height="11" fill="#f472b6" opacity="0.9"/>
+<rect x="1156.0" y="421" width="4.0" height="11" fill="#64748b" opacity="0.9"/>
+<circle cx="543.0" cy="449" r="3" fill="#22d3ee"/>
+<text x="550.0" y="452" font-size="8" class="dim">JavaScript 52%</text>
+<circle cx="635.6" cy="449" r="3" fill="#a78bfa"/>
+<text x="642.6" y="452" font-size="8" class="dim">Kotlin 21%</text>
+<circle cx="708.6" cy="449" r="3" fill="#fbbf24"/>
+<text x="715.6" y="452" font-size="8" class="dim">HTML 15%</text>
+<circle cx="771.8" cy="449" r="3" fill="#34d399"/>
+<text x="778.8" y="452" font-size="8" class="dim">Python 9%</text>
+<circle cx="839.9" cy="449" r="3" fill="#f472b6"/>
+<text x="846.9" y="452" font-size="8" class="dim">PowerShell 2%</text>
+<rect x="24" y="484" width="1152" height="88" rx="10" fill="#10161d" stroke="#1e2a36"/>
+<text x="40" y="508" class="h dim">EDGE FLEET <tspan class="acc">// deploy targets</tspan></text>
+<rect x="40" y="522" width="96" height="32" rx="16" fill="#0b0f14" stroke="#1e2a36"/>
+<circle cx="58" cy="538" r="4" fill="#34d399" class="led"/>
+<text x="70" y="536" font-size="9.5" class="t" font-weight="600">RPI-5</text>
+<text x="70" y="548" font-size="7" class="faint">online</text>
+<rect x="150" y="522" width="136" height="32" rx="16" fill="#0b0f14" stroke="#1e2a36"/>
+<circle cx="168" cy="538" r="4" fill="#34d399" class="led2"/>
+<text x="180" y="536" font-size="9.5" class="t" font-weight="600">DEV-BOARDS</text>
+<text x="180" y="548" font-size="7" class="faint">online</text>
+<rect x="300" y="522" width="175" height="32" rx="16" fill="#0b0f14" stroke="#1e2a36"/>
+<circle cx="318" cy="538" r="4" fill="#34d399" class="led3"/>
+<text x="330" y="536" font-size="9.5" class="t" font-weight="600">WIFI-NET</text>
+<text x="330" y="548" font-size="7" class="faint">ku-wl · autologin</text>
+<text x="1160" y="540" font-size="8.5" text-anchor="end" class="dim">deploy path: sim (Isaac Lab) → export → edge (Pi 5)</text>
+<text x="28" y="606" font-size="8" class="faint">auto-regen: GitHub Actions · daily 03:37 UTC · on push</text>
+<text x="1172" y="606" font-size="8" text-anchor="end" class="faint">policy: curiosity-driven · © 2026 thyjeff</text>
+</svg>
